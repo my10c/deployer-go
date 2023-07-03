@@ -18,7 +18,7 @@ var (
 	// varaibles start with a kapital letter are global
 	now = time.Now()
 
-	MyVersion   = "0.3"
+	MyVersion   = "0.4"
 	MyProgname  = path.Base(os.Args[0])
 	myAuthor    = "Marc Krisnanto and Luc Suryo"
 	myCopyright = "Copyright 2017 - " + strconv.Itoa(now.Year()) + " © Badassops LLC"
