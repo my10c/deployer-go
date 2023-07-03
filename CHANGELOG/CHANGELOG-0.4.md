@@ -1,7 +1,7 @@
 # v0.4
 
 ## INFO
-- 
+- rename modules to lowercase
 
 ### Binaries
 
