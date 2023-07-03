@@ -1,0 +1,52 @@
+# If you prefer the allow list template instead of the deny list, see community template:
+# https://github.com/github/gitignore/blob/main/community/Golang/Go.AllowList.gitignore
+#
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Dependency directories (remove the comment below to include it)
+# vendor/
+
+# OSX
+.DS_Store
+
+# vim
+*.swp
+
+# Go workspace file
+go.work
+
+# local work
+# Makefile
+bin/*
+template/*
+
+# binary files
+deployer
+release/deployer_Darwin_arm64
+release/deployer_Darwin_arm64.sha256
+release/deployer_Darwin_arm64.tar.gz
+
+release/deployer_Linux_aarch64
+release/deployer_Linux_aarch64.sha256
+release/deployer_Linux_aarch64.tar.gz
+
+release/deployer_Linux_x86_64
+release/deployer_Linux_x86_64.sha256
+release/deployer_Linux_x86_64.tar.gz
+
+# change log
+CHANGELOG/CHANGELOG-template
+
+# own stuff to be ignored
+docs/base-example.png

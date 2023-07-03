@@ -1,0 +1,24 @@
+{
+	"server": {
+		"port": 9092,
+		"ip": "0.0.0.0"
+	},
+	"logs": {
+        "logfile": "../test/deployer.log",
+		"maxsize": 500,
+        "maxage": 30,
+        "maxbackups": 28,
+		"debug": true,
+		"info": true,
+		"response-ok": true,
+		"response-error": true
+	},
+	"api": {
+		"prefix": "/api/v1/",
+		"auth": "fooey",
+		"acl": ["127.0.0.0/16", "192.168.1.0/16"],
+		"cmds": {
+			"blue": "../test/blue.sh"
+		}
+	}
+}
