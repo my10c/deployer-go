@@ -3,15 +3,12 @@ module deployer
 go 1.17
 
 require (
-	deployer.badassops.com/Initialize v0.0.0
-	deployer.badassops.com/Utils v0.0.0
-	deployer.badassops.com/Variables v0.0.0
-
-	deployer.badassops.com/Config v0.0.0
-	deployer.badassops.com/Msg v0.0.0
-	deployer.badassops.com/Logs v0.0.0
-	deployer.badassops.com/Api v0.0.0
-	deployer.badassops.com/Help v0.0.0
+	api v0.0.0
+	config v0.0.0
+	initialize v0.0.0
+	logs v0.0.0
+	utils v0.0.0
+	vars v0.0.0
 )
 
 require (
@@ -19,20 +16,22 @@ require (
 	github.com/akamensky/argparse v1.3.1 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
+	help v0.0.0 // indirect
+	msg v0.0.0 // indirect
 )
 
-replace deployer.badassops.com/Variables => ./mod/Variables
+replace vars => ./mod/vars
 
-replace deployer.badassops.com/Help => ./mod/Help
+replace help => ./mod/help
 
-replace deployer.badassops.com/Initialize => ./mod/Initialize
+replace initialize => ./mod/initialize
 
-replace deployer.badassops.com/Utils => ./mod/Utils
+replace utils => ./mod/utils
 
-replace deployer.badassops.com/Config => ./mod/Config
+replace config => ./mod/config
 
-replace deployer.badassops.com/Msg => ./mod/Msg
+replace msg => ./mod/msg
 
-replace deployer.badassops.com/Logs => ./mod/Logs
+replace logs => ./mod/logs
 
-replace deployer.badassops.com/Api => ./mod/Api
+replace api => ./mod/api

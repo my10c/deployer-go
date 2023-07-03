@@ -13,17 +13,17 @@ ifeq ($(UNAME_S),Darwin)
 endif
 
 SOURCES = deployer.go \
-	mod/Initialize/Initialize.go \
-	mod/Utils/Utils.go \
-	mod/Variables/Variables.go \
-	mod/Msg/Msg.go \
-	mod/Logs/Logs.go \
-	mod/Help/Help.go \
-	mod/Config/Config.go \
-	mod/Api/Api.go
+	mod/initialize/initialize.go \
+	mod/utils/utils.go \
+	mod/vars/vars.go \
+	mod/msg/msg.go \
+	mod/logs/logs.go \
+	mod/help/help.go \
+	mod/config/config.go \
+	mod/api/api.go
 
 BUILT_SOURCES = $(SOURCES)
-TOOL_VERSION := $(shell cat mod/Variables/Variables.go | grep MyVersion | egrep -v MyProgname | awk '{print $$3}')
+TOOL_VERSION := $(shell cat mod/vars/vars.go | grep MyVersion | egrep -v MyProgname | awk '{print $$3}')
 
 all:	release/deployer_$(OS_ID) \
 		release/deployer_$(OS_ID).tar.gz \

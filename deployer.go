@@ -13,39 +13,39 @@ import (
 	"net/http"
 	"os"
 
-	"deployer.badassops.com/Api"
-	"deployer.badassops.com/Config"
-	"deployer.badassops.com/Initialize"
-	"deployer.badassops.com/Logs"
-	"deployer.badassops.com/Utils"
-	"deployer.badassops.com/Variables"
+	"api"
+	"config"
+	"initialize"
+	"logs"
+	"utils"
+	"vars"
 )
 
 func main() {
 	// must run as root
-	//Utils.IsRoot()
+	//utils.IsRoot()
 
 	// get given argument overwrite the values in the configuration file
-	Initialize.InitArgs()
+	initialize.InitArgs()
 
 	// get value from the configuration file, default or overwritten
-	Config.Init(Variables.GivenValues["configFile"])
+	config.Init(vars.GivenValues["configFile"])
 
 	// initialize the logger system
-	Logs.Init()
+	logs.Init()
 
 	// initialize the aoi system
-	Api.Init()
+	api.Init()
 
 	// install a signale handler so we capture issue if the application dies
-	Utils.SignalHandler()
+	utils.SignalHandler()
 
 	// start the api server
-	err := http.ListenAndServe(fmt.Sprintf("%s:%d", Config.Server.Ip, Config.Server.Port), nil)
+	err := http.ListenAndServe(fmt.Sprintf("%s:%d", config.Server.Ip, config.Server.Port), nil)
 	if err != nil {
 		//e := fmt.Sprintf("http.ListenAndServer failed `%s`, panic follows...", err.Error())
-		//Logs.Error(errors.New(e))
-		Utils.ExitIfError(err)
+		//logs.Error(errors.New(e))
+		utils.ExitIfError(err)
 	}
 
 	// should never be reached

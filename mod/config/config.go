@@ -5,14 +5,14 @@
 // Unauthorized copying of this file, via any medium is strictly prohibited
 // * Proprietary and confidential *
 //
-package Config
+package config
 
 import (
 	"encoding/json"
 	"net"
 	"os"
 
-	"deployer.badassops.com/Utils"
+	"utils"
 )
 
 // ServerT is the server configuration.
@@ -66,7 +66,7 @@ func Init(path string) {
 	if err != nil {
 		//log.Printf("Config.Init %s: %s", path, err.Error())
 		//panic(err)
-		Utils.ExitIfError(err)
+		utils.ExitIfError(err)
 	}
 	defer f.Close()
 	decoder := json.NewDecoder(f)
@@ -74,7 +74,7 @@ func Init(path string) {
 	if err != nil {
 		//log.Printf("Config.Init %s: %s", path, err.Error())
 		//panic(err)
-		Utils.ExitIfError(err)
+		utils.ExitIfError(err)
 	}
 	Server = conf.Server
 	Logs = conf.Logs
@@ -87,7 +87,7 @@ func Init(path string) {
 		if err != nil {
 			//log.Printf("Config.Init %s: %s", v, err)
 			//panic(err)
-			Utils.ExitIfError(err)
+			utils.ExitIfError(err)
 		}
 		Api.AclP = append(Api.AclP, ipv4Net)
 	}

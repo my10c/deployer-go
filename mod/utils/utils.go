@@ -5,7 +5,7 @@
 // Unauthorized copying of this file, via any medium is strictly prohibited
 // * Proprietary and confidential *
 //
-package Utils
+package utils
 
 import (
 	"fmt"
@@ -18,7 +18,7 @@ import (
 	"strings"
 	"syscall"
 
-	"deployer.badassops.com/Variables"
+	"vars"
 )
 
 // Function to exit if an error occured
@@ -49,7 +49,7 @@ func StdOutAndLog(message string) {
 // Function to check if the user that runs the app is root
 func IsRoot() {
 	if os.Geteuid() != 0 {
-		StdOutAndLog(fmt.Sprintf("%s must be run as root.", Variables.MyProgname))
+		StdOutAndLog(fmt.Sprintf("%s must be run as root.", vars.MyProgname))
 		os.Exit(1)
 	}
 }

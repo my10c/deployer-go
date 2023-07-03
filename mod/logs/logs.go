@@ -5,7 +5,7 @@
 // Unauthorized copying of this file, via any medium is strictly prohibited
 // * Proprietary and confidential *
 //
-package Logs
+package logs
 
 import (
 	"log"
@@ -15,9 +15,9 @@ import (
 	"strconv"
 	"strings"
 
-	"deployer.badassops.com/Config"
-	"deployer.badassops.com/Msg"
-	"deployer.badassops.com/Variables"
+	"config"
+	"msg"
+	"vars"
 
 	"gopkg.in/natefinch/lumberjack.v2"
 )
@@ -114,13 +114,13 @@ func tidy(s string) string {
 //     }
 var Debug = debug
 
-var debug = func(msg string) {
+var debug = func(msgDebug string) {
 	var b strings.Builder
 	b.Grow(128)
 	b.WriteString("D ")
 	b.WriteString(funcName())
 	b.WriteString(" ")
-	b.WriteString(tidy(msg))
+	b.WriteString(tidy(msgDebug))
 	log.Println(b.String())
 }
 
@@ -181,17 +181,17 @@ var Response = response
 
 var response = func(r *http.Request, err error, args ...string) {
 	status := 200
-	msg := "OK"
+	msgResponse := "OK"
 	if err != nil {
-		status = Msg.GetStatus(err)
+		status = msg.GetStatus(err)
 		if len(args) > 0 {
-			msg = tidy(args[0])
+			msgResponse = tidy(args[0])
 		} else {
-			msg = tidy(err.Error())
+			msgResponse = tidy(err.Error())
 		}
 	} else {
 		if len(args) > 0 {
-			msg = tidy(args[0])
+			msgResponse = tidy(args[0])
 		}
 	}
 	var b strings.Builder
@@ -204,31 +204,31 @@ var response = func(r *http.Request, err error, args ...string) {
 	b.WriteString(" ")
 	b.WriteString(ip(r))
 	b.WriteString(" ")
-	b.WriteString(msg)
+	b.WriteString(msgResponse)
 	log.Println(b.String())
 }
 
 func Init() {
 	AddPrefix("Logs.")
 
-	if !Config.Logs.Info {
+	if !config.Logs.Info {
 		Info = nil
 	} else {
 		Info = info
 	}
 
-	if !Config.Logs.Debug {
+	if !config.Logs.Debug {
 		Debug = nil
 	} else {
 		Debug = debug
 	}
 
-	if Config.Logs.ResponseOK {
+	if config.Logs.ResponseOK {
 		responseOK = true
 	} else {
 		responseOK = false
 	}
-	if Config.Logs.ResponseError {
+	if config.Logs.ResponseError {
 		responseError = true
 	} else {
 		responseError = false
@@ -241,25 +241,25 @@ func Init() {
 	}
 
 	// Override values if given via the command line arguments
-	x := Variables.GivenValues["maxsize"] // = strconv.Itoa(DefaultLogMaxSize)
+	x := vars.GivenValues["maxsize"] // = strconv.Itoa(DefaultLogMaxSize)
 	if x != "" {
-		Config.Logs.FileMaxSize, _ = strconv.Atoi(x)
+		config.Logs.FileMaxSize, _ = strconv.Atoi(x)
 	}
-	x = Variables.GivenValues["maxbackups"] // = strconv.Itoa(DefaultLogMaxSize)
+	x = vars.GivenValues["maxbackups"] // = strconv.Itoa(DefaultLogMaxSize)
 	if x != "" {
-		Config.Logs.FileMaxBackups, _ = strconv.Atoi(x)
+		config.Logs.FileMaxBackups, _ = strconv.Atoi(x)
 	}
-	x = Variables.GivenValues["maxage"] // = strconv.Itoa(DefaultLogMaxSize)
+	x = vars.GivenValues["maxage"] // = strconv.Itoa(DefaultLogMaxSize)
 	if x != "" {
-		Config.Logs.FileMaxAge, _ = strconv.Atoi(x)
+		config.Logs.FileMaxAge, _ = strconv.Atoi(x)
 	}
 
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	log.SetOutput(&lumberjack.Logger{
-		Filename:   Config.Logs.FilePath,
-		MaxSize:    Config.Logs.FileMaxSize,
-		MaxBackups: Config.Logs.FileMaxBackups,
-		MaxAge:     Config.Logs.FileMaxAge,
+		Filename:   config.Logs.FilePath,
+		MaxSize:    config.Logs.FileMaxSize,
+		MaxBackups: config.Logs.FileMaxBackups,
+		MaxAge:     config.Logs.FileMaxAge,
 		Compress:   true,
 	})
 }

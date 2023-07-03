@@ -5,29 +5,29 @@
 // Unauthorized copying of this file, via any medium is strictly prohibited
 // * Proprietary and confidential *
 //
-package Initialize
+package initialize
 
 import (
 	"fmt"
 	"os"
 	"strconv"
 
-	"deployer.badassops.com/Help"
-	"deployer.badassops.com/Utils"
-	"deployer.badassops.com/Variables"
+	"help"
+	"utils"
+	"vars"
 
 	"github.com/akamensky/argparse"
 )
 
 // Function to process the given args
 func InitArgs() {
-	parser := argparse.NewParser(Variables.MyProgname, Variables.MyTask)
+	parser := argparse.NewParser(vars.MyProgname, vars.MyTask)
 
 	configFile := parser.String("c", "configFile",
 		&argparse.Options{
 			Required: false,
 			Help:     "Path to the configuration file",
-			Default:  Variables.DefaultConfigFile,
+			Default:  vars.DefaultConfigFile,
 		})
 
 	showSetup := parser.Flag("S", "showconfig",
@@ -55,28 +55,28 @@ func InitArgs() {
 		&argparse.Options{
 			Required: false,
 			Help:     "Path to the log file",
-			Default:  Variables.DefaultLog,
+			Default:  vars.DefaultLog,
 		})
 
 	logMaxSize := parser.String("M", "logMaxSize",
 		&argparse.Options{
 			Required: false,
-			Help:     "Max size of the log file (MB). Default: " + strconv.Itoa(Variables.DefaultLogMaxSize),
-			//Default:  strconv.Itoa(Variables.DefaultLogMaxSize),
+			Help:     "Max size of the log file (MB). Default: " + strconv.Itoa(vars.DefaultLogMaxSize),
+			//Default:  strconv.Itoa(vars.DefaultLogMaxSize),
 		})
 
 	logMaxBackups := parser.String("B", "logMaxBackups",
 		&argparse.Options{
 			Required: false,
-			Help:     "Max log file count. Default: " + strconv.Itoa(Variables.DefaultLogMaxBackups),
-			//Default:  strconv.Itoa(Variables.DefaultLogMaxBackups),
+			Help:     "Max log file count. Default: " + strconv.Itoa(vars.DefaultLogMaxBackups),
+			//Default:  strconv.Itoa(vars.DefaultLogMaxBackups),
 		})
 
 	logMaxAge := parser.String("A", "logMaxAge",
 		&argparse.Options{
 			Required: false,
-			Help:     "Max days to keep a log file. Default: " + strconv.Itoa(Variables.DefaultLogMaxAge),
-			//Default:  strconv.Itoa(Variables.DefaultLogMaxAge),
+			Help:     "Max days to keep a log file. Default: " + strconv.Itoa(vars.DefaultLogMaxAge),
+			//Default:  strconv.Itoa(vars.DefaultLogMaxAge),
 		})
 
 	err := parser.Parse(os.Args)
@@ -88,47 +88,47 @@ func InitArgs() {
 	}
 
 	if *showSetup {
-		Help.HelpSetup()
+		help.HelpSetup()
 		os.Exit(0)
 	}
 
 	if *showVersion {
-		fmt.Printf("%s\n", Variables.MyVersion)
+		fmt.Printf("%s\n", vars.MyVersion)
 		os.Exit(0)
 	}
 
 	if *showInfo {
-		fmt.Printf("%s\n", Variables.MyInfo)
-		fmt.Printf("%s\n", Variables.MyTask)
+		fmt.Printf("%s\n", vars.MyInfo)
+		fmt.Printf("%s\n", vars.MyTask)
 		os.Exit(0)
 	}
 
 	if configFile != nil {
-		Variables.GivenValues["configFile"] = fmt.Sprintf("%s", *configFile)
+		vars.GivenValues["configFile"] = fmt.Sprintf("%s", *configFile)
 	}
 
 	//if *logFile != "" {
-	Variables.GivenValues["logfile"] = fmt.Sprintf("%s", *logFile)
+	vars.GivenValues["logfile"] = fmt.Sprintf("%s", *logFile)
 	//}
 
 	if *logMaxSize != "" {
-		Variables.GivenValues["maxsize"] = fmt.Sprintf("%s", *logMaxSize)
+		vars.GivenValues["maxsize"] = fmt.Sprintf("%s", *logMaxSize)
 	}
 
 	if *logMaxBackups != "" {
-		Variables.GivenValues["maxbackups"] = fmt.Sprintf("%s", *logMaxBackups)
+		vars.GivenValues["maxbackups"] = fmt.Sprintf("%s", *logMaxBackups)
 	}
 
 	if *logMaxAge != "" {
-		Variables.GivenValues["maxage"] = fmt.Sprintf("%s", *logMaxAge)
+		vars.GivenValues["maxage"] = fmt.Sprintf("%s", *logMaxAge)
 	}
 
-	if !Utils.CheckFileExist(Variables.GivenValues["configFile"]) {
-		fmt.Printf("Configuration file %s, does not exist\n", Variables.GivenValues["configFile"])
+	if !utils.CheckFileExist(vars.GivenValues["configFile"]) {
+		fmt.Printf("Configuration file %s, does not exist\n", vars.GivenValues["configFile"])
 		os.Exit(1)
 	}
 
-	if !Utils.CheckFileExist(Variables.GivenValues["logfile"]) {
+	if !utils.CheckFileExist(vars.GivenValues["logfile"]) {
 		os.Exit(1)
 	}
 }

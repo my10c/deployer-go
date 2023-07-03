@@ -5,7 +5,7 @@
 // Unauthorized copying of this file, via any medium is strictly prohibited
 // * Proprietary and confidential *
 //
-package Msg
+package msg
 
 // Msg makes it possible to associate an `error` with a HTTP status code while
 // allowing packages to create their own unique errors that can be used by

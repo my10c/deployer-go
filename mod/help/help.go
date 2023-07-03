@@ -5,17 +5,17 @@
 // Unauthorized copying of this file, via any medium is strictly prohibited
 // * Proprietary and confidential *
 //
-package Help
+package help
 
 import (
 	"fmt"
 	"os"
 
-	"deployer.badassops.com/Variables"
+	"vars"
 )
 
 func HelpSetup() {
-	fmt.Printf("%s", Variables.MyInfo)
+	fmt.Printf("%s", vars.MyInfo)
 	fmt.Print(`
 Configuration file must be valid json files with this structure:
 {

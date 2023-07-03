@@ -5,7 +5,7 @@
 // Unauthorized copying of this file, via any medium is strictly prohibited
 // * Proprietary and confidential *
 //
-package Api
+package api
 
 import (
 	"fmt"
@@ -15,9 +15,9 @@ import (
 	"os/exec"
 	"strings"
 
-	"deployer.badassops.com/Config"
-	"deployer.badassops.com/Logs"
-	"deployer.badassops.com/Msg"
+	"config"
+	"logs"
+	"msg"
 )
 
 func getIp(r *http.Request) string {
@@ -32,31 +32,31 @@ func getIp(r *http.Request) string {
 func handle(w http.ResponseWriter, r *http.Request) {
 	// Make sure the method is GET.
 	if r.Method != "GET" {
-		err := Msg.ENotFound
-		if Logs.Response != nil {
-			Logs.Response(r, err)
+		err := msg.ENotFound
+		if logs.Response != nil {
+			logs.Response(r, err)
 		}
-		w.WriteHeader(Msg.GetStatus(err))
+		w.WriteHeader(msg.GetStatus(err))
 		return
 	}
 
 	// Always authenticate, i.e. the request must contain an Auth header
 	// containing the token as set in the configuration.
 	auth := r.Header.Get("Auth")
-	if auth != Config.Api.Auth {
-		err := Msg.EUnauthorized
-		if Logs.Response != nil {
-			Logs.Response(r, err)
+	if auth != config.Api.Auth {
+		err := msg.EUnauthorized
+		if logs.Response != nil {
+			logs.Response(r, err)
 		}
-		w.WriteHeader(Msg.GetStatus(err))
+		w.WriteHeader(msg.GetStatus(err))
 		return
 	}
 
 	// Check whether the remote host is allowed access.
-	if len(Config.Api.AclP) > 0 {
+	if len(config.Api.AclP) > 0 {
 		ip := net.ParseIP(getIp(r))
 		ok := false
-		for _, v := range Config.Api.AclP {
+		for _, v := range config.Api.AclP {
 			fmt.Println(v, v.Contains(ip))
 			if v.Contains(ip) {
 				ok = true
@@ -64,43 +64,43 @@ func handle(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		if !ok {
-			err := Msg.EUnauthorized
-			Logs.Response(r, err)
-			w.WriteHeader(Msg.GetStatus(err))
+			err := msg.EUnauthorized
+			logs.Response(r, err)
+			w.WriteHeader(msg.GetStatus(err))
 			return
 		}
 	}
 
 	// The path must start with the prefix as set in the configuration.
 	path := r.URL.Path
-	if !strings.HasPrefix(path, Config.Api.Prefix) {
-		err := Msg.ENotFound
-		if Logs.Response != nil {
-			Logs.Response(r, err)
+	if !strings.HasPrefix(path, config.Api.Prefix) {
+		err := msg.ENotFound
+		if logs.Response != nil {
+			logs.Response(r, err)
 		}
-		w.WriteHeader(Msg.GetStatus(err))
+		w.WriteHeader(msg.GetStatus(err))
 		return
 	}
 
 	// There must be at least one argument to pass to the script.
 	if len(r.URL.Query()) < 1 {
-		err := Msg.ENotFound
-		if Logs.Response != nil {
-			Logs.Response(r, err)
+		err := msg.ENotFound
+		if logs.Response != nil {
+			logs.Response(r, err)
 		}
-		w.WriteHeader(Msg.GetStatus(err))
+		w.WriteHeader(msg.GetStatus(err))
 		return
 	}
 
 	// Since we only need the name, then strip it to get the command (script).
-	path = strings.TrimPrefix(path, Config.Api.Prefix)
-	cmd, exists := Config.Api.Cmds[path]
+	path = strings.TrimPrefix(path, config.Api.Prefix)
+	cmd, exists := config.Api.Cmds[path]
 	if !exists {
-		err := Msg.ENotFound
-		if Logs.Response != nil {
-			Logs.Response(r, err)
+		err := msg.ENotFound
+		if logs.Response != nil {
+			logs.Response(r, err)
 		}
-		w.WriteHeader(Msg.GetStatus(err))
+		w.WriteHeader(msg.GetStatus(err))
 		return
 	}
 
@@ -110,25 +110,25 @@ func handle(w http.ResponseWriter, r *http.Request) {
 
 	// If we're debugging, it's nice to print out the result of the script.
 	// That is, if it does print out something.
-	if Logs.Debug != nil {
+	if logs.Debug != nil {
 		exe.Stdout = os.Stdout
 	}
 
 	err := exe.Run()
 	if err != nil {
-		if Logs.Response != nil {
-			Logs.Response(r, err)
+		if logs.Response != nil {
+			logs.Response(r, err)
 		}
-		w.WriteHeader(Msg.GetStatus(err))
+		w.WriteHeader(msg.GetStatus(err))
 		return
 	}
-	if Logs.Response != nil {
-		Logs.Response(r, nil, fmt.Sprintf("%s %s", cmd, r.URL.RawQuery))
+	if logs.Response != nil {
+		logs.Response(r, nil, fmt.Sprintf("%s %s", cmd, r.URL.RawQuery))
 	}
 }
 
 func Init() {
-	Logs.AddPrefix("Api.")
+	logs.AddPrefix("Api.")
 
 	// This handles every URL.
 	http.HandleFunc("/", handle)
