@@ -1,10 +1,11 @@
 //
-// Copyright (c) 2017 - 2021, © Badassops LLC
+// Copyright (c) 2017 - 2022, © Badassops LLC
 // All rights reserved.
 //
-// Unauthorized copying of this file, via any medium is strictly prohibited
-// * Proprietary and confidential *
+// Release under the BSD 3-Clause License
+// https://opensource.org/licenses/BSD-3-Clause ♥
 //
+
 package api
 
 import (

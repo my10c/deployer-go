@@ -1,10 +1,11 @@
 //
-// Copyright (c) 2017 - 2021, © Badassops LLC
+// Copyright (c) 2017 - 2022, © Badassops LLC
 // All rights reserved.
 //
-// Unauthorized copying of this file, via any medium is strictly prohibited
-// * Proprietary and confidential *
+// Release under the BSD 3-Clause License
+// https://opensource.org/licenses/BSD-3-Clause ♥
 //
+
 package vars
 
 import (
@@ -18,7 +19,7 @@ var (
 	// varaibles start with a kapital letter are global
 	now = time.Now()
 
-	MyVersion   = "0.4"
+	MyVersion   = "0.5"
 	MyProgname  = path.Base(os.Args[0])
 	myAuthor    = "Marc Krisnanto and Luc Suryo"
 	myCopyright = "Copyright 2017 - " + strconv.Itoa(now.Year()) + " © Badassops LLC"
