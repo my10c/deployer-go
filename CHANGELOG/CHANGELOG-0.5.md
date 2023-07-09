@@ -1,4 +1,4 @@
-# v0.4
+# v0.5
 
 ## INFO
 - release under BSD license now
