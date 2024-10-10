@@ -1,2 +1,2 @@
 # deployer
-The blue - green deployer
+The 'any' deployer
