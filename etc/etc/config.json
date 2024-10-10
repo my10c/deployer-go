@@ -1,0 +1,24 @@
+{
+	"server": {
+		"port": 9091,
+		"ip": "10.0.0.100"
+	},
+	"logs": {
+        "logfile": "/var/log/deployer.log",
+        "maxsize": 500,
+        "maxage": 30,
+        "maxbackups": 28,
+		"debug": false,
+		"info": false,
+		"response-ok": false,
+		"response-error": true
+	},
+	"api": {
+		"prefix": "/api/v1/",
+		"auth": "veryVerySecretYes?",
+		"acl": ["127.0.0.0/16", "10.0.0.0/8"],
+		"cmds": {
+			"ansible": "/usr/local/lib/deployer/ansible-deployer"
+		}
+	}
+}
